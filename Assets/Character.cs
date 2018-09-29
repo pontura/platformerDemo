@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
+	public int coins;
 	public Rigidbody2D rb;
 	public float speed;// = 360f;
 	public float maxSpeed;//  = 5f;
@@ -17,6 +18,12 @@ public class Character : MonoBehaviour {
 	float lastTimeOnFloor;
 	void Update () {
 		float h = Input.GetAxis ("Horizontal");
+
+		if (h < 0)
+			transform.localScale = new Vector3 (-1, 1, 1);
+		else if (h > 0)
+			transform.localScale = new Vector3 (1, 1, 1);
+		
 		rb.velocity = new Vector2(h*speed, rb.velocity.y);
 		grounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Floor"));
 		if (Time.time > lastTimeOnFloor + 0.2f && grounded)
@@ -30,5 +37,9 @@ public class Character : MonoBehaviour {
 			rb.AddForce (new Vector2(0f, jumpForce*jumpSecondFactor));
 			jumps = 2;
 		}
+	}
+	public void Die()
+	{
+		print ("die");
 	}
 }
