@@ -27,6 +27,7 @@ public class Coin : MonoBehaviour {
 	}
 	void OnDestroy()
 	{
+		Events.OnSoundFX ("sounds/coin");
 		Destroy (this.gameObject);
 	}
 }

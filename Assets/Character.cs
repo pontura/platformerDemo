@@ -84,5 +84,6 @@ public class Character : MonoBehaviour {
 		state = states.JUMP;
 
 		anim.Play ("jump");
+		Events.OnSoundFX ("sounds/jump");
 	}
 }
