@@ -6,7 +6,7 @@ public class Character : MonoBehaviour {
 
 	public Animator anim;
 	public int coins;
-	public Rigidbody2D rb;
+	Rigidbody2D rb;
 	public float speed;// = 360f;
 	public float maxSpeed;//  = 5f;
 	public float jumpForce;//  = 500f;
@@ -23,6 +23,9 @@ public class Character : MonoBehaviour {
 		WALKING,
 		JUMP,
 		REACH_FLOOR
+	}
+	void Start(){
+		rb = GetComponent<Rigidbody2D> ();
 	}
 
 	float lastTimeOnFloor;

@@ -24,4 +24,8 @@ public class UIManager : MonoBehaviour {
 		life--;
 		lifeField.text = "life: " + life;
 	}
+	public void Win()
+	{
+		UnityEngine.SceneManagement.SceneManager.LoadScene ("WinScreen");
+	}
 }
