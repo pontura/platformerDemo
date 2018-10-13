@@ -8,7 +8,7 @@ public class Character : MonoBehaviour {
 	public int coins;
 	Rigidbody2D rb;
 	public float speed;// = 360f;
-	public float maxSpeed;//  = 5f;
+	//public float maxSpeed;//  = 5f;
 	public float jumpForce;//  = 500f;
 	public float jumpSecondFactor;//  = 250f;
 	bool jump;
@@ -29,22 +29,35 @@ public class Character : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 	}
 
+	public float moveForce = 365f;
+	 float maxSpeed = 5f;
+
 	float lastTimeOnFloor;
 	void Update () {
-		if (state == states.DEAD)
-			return;
-		float h = Input.GetAxis ("Horizontal");
-		if (h < -0.1f)
-			transform.localScale = new Vector3 (-1, 1, 1);
-		else if (h > 0.1f)
-			transform.localScale = new Vector3 (1, 1, 1);
+		
+		float h = Input.GetAxis("Horizontal");
 
-		if (h != 0) {
-			Walk ();
-			rb.velocity = new Vector2(h*speed, rb.velocity.y);
-		} else {
-			Idle ();
-		}
+
+		if (h * rb.velocity.x < maxSpeed)
+			rb.AddForce(Vector2.right * h * moveForce);
+
+		if (Mathf.Abs (rb.velocity.x) > maxSpeed)
+			rb.velocity = new Vector2(Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
+
+
+
+//		float h = Input.GetAxis ("Horizontal");
+//		if (h < -0.1f)
+//			transform.localScale = new Vector3 (-1, 1, 1);
+//		else if (h > 0.1f)
+//			transform.localScale = new Vector3 (1, 1, 1);
+//
+//		if (h != 0) {
+//			Walk ();
+//			rb.velocity = new Vector2(h*speed, rb.velocity.y);
+//		} else {
+//			Idle ();
+//		}
 
 
 		grounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Floor"));
@@ -65,8 +78,6 @@ public class Character : MonoBehaviour {
 	}
 	public void Die()
 	{
-		print ("die");
-		state = states.DEAD;
 	}
 	void Walk()
 	{

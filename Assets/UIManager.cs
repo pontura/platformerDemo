@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour {
 	{
 		life--;
 		lifeField.text = "life: " + life;
+		if(life ==0)
+			UnityEngine.SceneManagement.SceneManager.LoadScene ("LoseScreen");
 	}
 	public void Win()
 	{
