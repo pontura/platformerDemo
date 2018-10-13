@@ -22,7 +22,8 @@ public class Character : MonoBehaviour {
 		IDLE,
 		WALKING,
 		JUMP,
-		REACH_FLOOR
+		REACH_FLOOR,
+		DEAD
 	}
 	void Start(){
 		rb = GetComponent<Rigidbody2D> ();
@@ -30,20 +31,22 @@ public class Character : MonoBehaviour {
 
 	float lastTimeOnFloor;
 	void Update () {
+		if (state == states.DEAD)
+			return;
 		float h = Input.GetAxis ("Horizontal");
-
-		if (h < 0)
+		if (h < -0.1f)
 			transform.localScale = new Vector3 (-1, 1, 1);
-		else if (h > 0)
+		else if (h > 0.1f)
 			transform.localScale = new Vector3 (1, 1, 1);
 
 		if (h != 0) {
 			Walk ();
+			rb.velocity = new Vector2(h*speed, rb.velocity.y);
 		} else {
 			Idle ();
 		}
-		
-		rb.velocity = new Vector2(h*speed, rb.velocity.y);
+
+
 		grounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Floor"));
 		if (Time.time > lastTimeOnFloor + 0.2f && grounded) {
 			state = states.REACH_FLOOR;
@@ -63,6 +66,7 @@ public class Character : MonoBehaviour {
 	public void Die()
 	{
 		print ("die");
+		state = states.DEAD;
 	}
 	void Walk()
 	{
